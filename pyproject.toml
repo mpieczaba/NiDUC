@@ -1,0 +1,6 @@
+[project]
+name = "niduc"
+version = "0.0.1"
+description = "Implementacja kodera i dekodera RS."
+authors = [{ name = "Kamil Sobierajski" }, { name = "Mikołaj Pieczaba" }]
+readme = "README.md"
