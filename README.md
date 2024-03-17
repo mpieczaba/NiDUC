@@ -3,7 +3,7 @@ Implementacja kodera i dekodera RS.
 
 ## Parametry implementacji
 
-- symbole kodu z ciała Galois $GF(2^m)$, gdzie $m \in \{ 3, 4, 5, 6, \dots \}$
+- symbole kodu z ciała Galois $GF(2^m)$, gdzie $m \in \set{ 3, 4, 5, 6, \dots }$
 - zdolność korekcyjna kodu $t \gt 3$ symbole
 
 ## Schemat implementacji
@@ -60,3 +60,10 @@ stateDiagram
     channel --> decoder
     decoder --> [*]
 ```
+
+## Pomocne linki
+
+- [Wikiversity: Reed–Solomon codes for coders](https://en.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders)
+- [Practical Reed-Solomon for Programmers](https://berthub.eu/articles/posts/reed-solomon-for-programmers/)
+- [NASA: Reed-Solomon Codes and the Exploration of the Solar System](https://dataverse.jpl.nasa.gov/api/access/datafile/34447?gbrecs=true)
+- [UNB: Introduction to Reed Solomon (RS) Codes](https://www.ece.unb.ca/cgi-bin/tervo/rscodes.pl)
