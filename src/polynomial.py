@@ -39,15 +39,58 @@ class Polynomial:
         if self.gf is None:
             raise ValueError("Galois field is not set!")
 
-        res = Polynomial([0] * (len(self) + len(poly) - 1))
+        res = Polynomial([0] * (len(self) + len(poly) - 1), self.gf)
 
         for i in range(0, len(poly)):
             for j in range(0, len(self)):
-                res.coef[i + j] ^= self.gf.alpha[
-                    (self.gf.index[self.coef[j]] + self.gf.index[poly.coef[i]]) % 16
-                ]
+                res.coef[i + j] ^= self.gf.mul(self.coef[j], poly.coef[i])
 
         return res
+
+    def __truediv__(self, poly):
+        if self.gf is None:
+            raise ValueError("Galois field is not set!")
+
+        return self.__div(poly)[0]
+
+    def __mod__(self, poly):
+        if self.gf is None:
+            raise ValueError("Galois field is not set!")
+
+        return self.__div(poly)[1]
+
+    def __div(self, poly):
+        """
+        Calculates P(x) / Q(x) + R(x) using the long division algorithm.
+
+        Parameters
+        ----------
+        poly : Polynomial
+            The divisor polynomial.
+
+        Returns
+        -------
+        res : Polynomial
+            The quotient polynomial.
+        rmd : Polynomial
+            The remainder polynomial.
+        """
+
+        rmd = Polynomial(self.coef, self.gf)
+        res = Polynomial([0] * (len(self) - len(poly) + 1))
+
+        i = 0
+        while len(rmd) >= len(poly):
+            coef = self.gf.div(rmd.coef[-1], poly.coef[-1])
+
+            res.coef[-1 - i] = coef
+
+            rmd += poly * Polynomial([0] * (len(rmd) - len(poly)) + [coef], self.gf)
+            rmd.coef.pop(-1)
+
+            i += 1
+
+        return (res, rmd)
 
     def degree(self):
         """
