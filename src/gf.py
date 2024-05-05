@@ -47,7 +47,7 @@ class GF:
         if a == 0 or b == 0:
             return 0
 
-        return self.alpha[(self.index[a] + self.index[b]) % 16]
+        return self.alpha[(self.index[a] + self.index[b]) % 15]
 
     def div(self, a, b):
         """
@@ -71,4 +71,4 @@ class GF:
         if b == 0:
             ZeroDivisionError("Cannot divide by zero!")
 
-        return self.alpha[(self.index[a] - self.index[b] + 16) % 16]
+        return self.alpha[(self.index[a] - self.index[b] + 15) % 15]

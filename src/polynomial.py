@@ -28,12 +28,12 @@ class Polynomial:
         return len(self.coef)
 
     def __add__(self, poly):
-        res = Polynomial(self.coef + [0] * (len(poly) - len(self)))
+        res = Polynomial(self.coef + [0] * (len(poly) - len(self)), self.gf)
 
         for i in range(0, min(len(res), len(poly))):
             res.coef[i] ^= poly.coef[i]
 
-        return res
+        return Polynomial.__normalize(res)
 
     def __mul__(self, poly):
         if self.gf is None:
@@ -45,19 +45,19 @@ class Polynomial:
             for j in range(0, len(self)):
                 res.coef[i + j] ^= self.gf.mul(self.coef[j], poly.coef[i])
 
-        return res
+        return Polynomial.__normalize(res)
 
     def __truediv__(self, poly):
         if self.gf is None:
             raise ValueError("Galois field is not set!")
 
-        return self.__div(poly)[0]
+        return Polynomial.__normalize(self.__div(poly)[0])
 
     def __mod__(self, poly):
         if self.gf is None:
             raise ValueError("Galois field is not set!")
 
-        return self.__div(poly)[1]
+        return Polynomial.__normalize(self.__div(poly)[1])
 
     def __div(self, poly):
         """
@@ -86,11 +86,30 @@ class Polynomial:
             res.coef[-1 - i] = coef
 
             rmd += poly * Polynomial([0] * (len(rmd) - len(poly)) + [coef], self.gf)
-            rmd.coef.pop(-1)
 
             i += 1
 
         return (res, rmd)
+
+    def __normalize(poly):
+        """
+        Trims trailing zero coefficients of the polynomial.
+
+        Parameters
+        ----------
+        poly : Polynomial
+            The polynomial to be trimmed.
+
+        Returns
+        -------
+        res : Polynomial
+            The trimmed polynomial.
+        """
+
+        while len(poly) > 1 and poly.coef[-1] == 0:
+            poly.coef.pop(-1)
+
+        return poly
 
     def degree(self):
         """
