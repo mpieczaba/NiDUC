@@ -7,10 +7,23 @@ class Encoder:
 
     Parameters
     ----------
-    t: int
+    t : int
         The number of symbols.
     gf : GF
         The instance of the GF class.
+
+    Attributes
+    ----------
+    t : int
+        The number of symbols.
+    n : int
+        The code word size.
+    k : int
+        The message size.
+    gf : GF
+        The instance of the GF class.
+    g : Polynomial
+        The instance of the generator polynomial.
     """
 
     def __init__(self, t, gf):
@@ -28,7 +41,7 @@ class Encoder:
 
         Parameters
         ----------
-        p: Polynomial
+        p : Polynomial
             The message polynomial.
 
         Returns

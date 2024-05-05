@@ -8,6 +8,13 @@ class Polynomial:
         Polynomial coefficients in order of increasing degree.
     gf : GF, optional
         The instance of the GF class.
+
+    Attributes
+    ----------
+    coef : array_like
+        Polynomial coefficients in order of increasing degree.
+    gf : GF
+        The instance of the GF class.
     """
 
     def __init__(self, coef, gf=None):

@@ -6,6 +6,15 @@ class GF:
     ----------
     p : Polynomial
         The primitive polynomial of the Galois field.
+
+    Attributes
+    ----------
+    p : Polynomial
+        The primitive polynomial of the Galois field.
+    index : array_like
+        The array that maps exponent of the primitive element to index in the Galois field.
+    alpha : array_like
+        The array that maps index to exponent of the primitive element in the Galois field.
     """
 
     def __init__(self, p):
@@ -64,6 +73,11 @@ class GF:
         -------
         res : int
             The quotient number.
+
+        Raises
+        ------
+        err : ZeroDivisionError
+            If `b` is equal to zero.
         """
 
         if a == 0:
