@@ -1,28 +1,34 @@
 from polynomial import Polynomial
 from gf import GF
+from encoder import Encoder
 
 
 class NiDUC:
     def main():
         print("NiDUC")
 
-        # Create the primitive polynomial instance.
+        # Set the number number of correctable symbols
+        t = 6
+
+        # Create an instance of the primitive polynomial.
         p = Polynomial([1, 1, 0, 0, 1])
 
-        # Create the Galois field instance.
+        # Create an instance of the Galois field.
         gf = GF(p)
 
-        # Create instances of the f and g polynomials.
-        f = Polynomial([0, 1, 2, 3, 4], gf)
-        g = Polynomial([0, 4, 2, 1], gf)
+        # Create an instance of the message array.
+        m = [1, 2, 3]
 
-        print("f(x) = " + str(f))
-        print("g(x) = " + str(g))
+        # Create an instance of the encoder.
+        e = Encoder(t)
 
-        print("f(x) + g(x) = " + str(f + g))
-        print("f(x) * g(x) = " + str(f * g))
-        print("f(x) / g(x) = " + str(f / g))
-        print("f(x) % g(x) = " + str(f % g))
+        # Encode the message.
+        c = e.encode(m)
+
+        print("t = " + str(t))
+        print("P(x) = " + str(p))
+        print("M(x) = " + str(m))
+        print("C(x) = " + str(c))
 
     if __name__ == "__main__":
         main()
