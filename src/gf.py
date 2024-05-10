@@ -19,8 +19,11 @@ class GF:
 
     def __init__(self, p):
         self.p = p
-        self.index = [0] * (2 ** p.degree())
-        self.alpha = [0] * (2 ** p.degree() - 1)
+
+        global index
+        index = [0] * (2 ** p.degree())
+        global alpha
+        alpha = [0] * (2 ** p.degree() - 1)
 
         self.__generate_gf()
 
@@ -29,14 +32,14 @@ class GF:
 
         x = 1
         for i in range(0, 2 ** self.p.degree() - 1):
-            self.alpha[i] = x
-            self.index[x] = i
+            alpha[i] = x
+            index[x] = i
 
             x *= 2
             if x & 2 ** self.p.degree():
                 x ^= self.p(2)
 
-    def mul(self, a, b):
+    def mul(a, b):
         """
         Multiplies a and b in the Galois field.
 
@@ -51,14 +54,22 @@ class GF:
         -------
         res : int
             The product number.
+
+        Raises
+        ------
+        err : ValueError
+            If alpha or index array is empty.
         """
+
+        if alpha is None or index is None:
+            raise ValueError("Galois field is not set!")
 
         if a == 0 or b == 0:
             return 0
 
-        return self.alpha[(self.index[a] + self.index[b]) % 15]
+        return alpha[(index[a] + index[b]) % 15]
 
-    def div(self, a, b):
+    def div(a, b):
         """
         Divides a by b in the Galois field.
 
@@ -76,13 +87,18 @@ class GF:
 
         Raises
         ------
-        err : ZeroDivisionError
+        err : ValueError
+            If alpha or index array is empty.
+        zero_div_err : ZeroDivisionError
             If `b` is equal to zero.
         """
+
+        if alpha is None or index is None:
+            raise ValueError("Galois field is not set!")
 
         if a == 0:
             return 0
         if b == 0:
             ZeroDivisionError("Cannot divide by zero!")
 
-        return self.alpha[(self.index[a] - self.index[b] + 15) % 15]
+        return alpha[(index[a] - index[b] + 15) % 15]

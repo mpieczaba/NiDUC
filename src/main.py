@@ -16,11 +16,11 @@ class NiDUC:
         # Create an instance of the Galois field.
         gf = GF(p)
 
-        # Create an instance of the message polynomial.
-        m = Polynomial([1, 2, 3], gf)
+        # Create an instance of the message array.
+        m = [1, 2, 3]
 
         # Create an instance of the encoder.
-        e = Encoder(t, gf)
+        e = Encoder(t)
 
         # Encode the message.
         c = e.encode(m)
