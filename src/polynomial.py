@@ -20,7 +20,12 @@ class Polynomial:
         self.coef = coef
 
     def __call__(self, x):
-        return sum(map(lambda e: e[1] * x ** e[0], enumerate(self.coef)))
+        res = self.coef[0]
+
+        for i in range(1, len(self)):
+            res ^= GF.mul(self.coef[i], GF.pow(x, i))
+
+        return res
 
     def __str__(self):
         return " + ".join(
