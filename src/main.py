@@ -35,11 +35,12 @@ class NiDUC:
         print("t = " + str(t))
         print("P(x) = " + str(p))
         print("G(x) = " + str(e.g))
-        print("M(x) = " + str(m))
+        print("M = " + str(m))
         print("C(x) = " + str(c))
         print("S(x) = " + str(d.s))
         print("Ω(x) = " + str(d.omega))
         print("Λ(x) = " + str(d.lmbd))
+        print("X = " + str(d.x))
 
     if __name__ == "__main__":
         main()

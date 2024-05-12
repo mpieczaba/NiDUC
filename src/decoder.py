@@ -47,17 +47,18 @@ class Decoder:
         r.coef[-1] ^= 7
         r.coef[7] ^= 12
 
-        self.__calculate_syndromes(r)
+        self.__calculate_syndrome_polynomial(r)
         self.__calculate_error_locator_and_magnitude_polynomials()
+        self.__calculate_error_locations()
 
-    def __calculate_syndromes(self, p):
-        """Generates the syndrome polynomial."""
+    def __calculate_syndrome_polynomial(self, p):
+        """Calculates the syndrome polynomial."""
 
         for i in range(1, 13):
             self.s.coef[i - 1] = p(GF.pow(2, i))
 
     def __calculate_error_locator_and_magnitude_polynomials(self):
-        """Generates the error locator and magnitude polynomials."""
+        """Calculates the error locator and magnitude polynomials."""
 
         prev1 = Polynomial([0] * 2 * self.t + [1])
         prev2 = Polynomial([0])
@@ -74,3 +75,12 @@ class Decoder:
 
         self.omega /= Polynomial([self.lmbd.coef[0]])
         self.lmbd /= Polynomial([self.lmbd.coef[0]])
+
+    def __calculate_error_locations(self):
+        """Calculates error locations."""
+
+        self.x = []
+
+        for i in range(0, len(gf.alpha)):
+            if self.lmbd(gf.alpha[i]) == 0:
+                self.x.append((15 - i) % 15)
