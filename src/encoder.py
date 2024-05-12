@@ -32,7 +32,7 @@ class Encoder:
 
     def encode(self, m):
         """
-        Encodes given message polynomial.
+        Encodes given message array.
 
         Parameters
         ----------

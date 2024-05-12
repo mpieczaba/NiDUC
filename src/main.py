@@ -27,16 +27,19 @@ class NiDUC:
         c = e.encode(m)
 
         # Create an instance of the decoder.
-        d = Decoder()
+        d = Decoder(t)
 
         # Decode the message.
         s = d.decode(c)
 
         print("t = " + str(t))
         print("P(x) = " + str(p))
+        print("G(x) = " + str(e.g))
         print("M(x) = " + str(m))
         print("C(x) = " + str(c))
-        print("S(x) = " + str(s))
+        print("S(x) = " + str(d.s))
+        print("Ω(x) = " + str(d.omega))
+        print("Λ(x) = " + str(d.lmbd))
 
     if __name__ == "__main__":
         main()
