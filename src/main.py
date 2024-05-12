@@ -1,11 +1,15 @@
 from polynomial import Polynomial
 from gf import GF
 from encoder import Encoder
+from Medium import Medium
 
 
 class NiDUC:
     def main():
         print("NiDUC")
+        
+        # Set up the Medium simulation
+        medium = Medium(0.02)
 
         # Set the number number of correctable symbols
         t = 6
@@ -29,6 +33,10 @@ class NiDUC:
         print("P(x) = " + str(p))
         print("M(x) = " + str(m))
         print("C(x) = " + str(c))
+        
+        sent_message = c.to_bytes()
+        received_message = medium.transmit(sent_message)
+        print("Received C(x) = " + str(Polynomial.from_bytes(received_message)))
 
     if __name__ == "__main__":
         main()
