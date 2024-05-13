@@ -1,6 +1,7 @@
 from polynomial import Polynomial
 from gf import GF
 from encoder import Encoder
+from decoder import Decoder
 
 
 class NiDUC:
@@ -25,10 +26,22 @@ class NiDUC:
         # Encode the message.
         c = e.encode(m)
 
+        # Create an instance of the decoder.
+        d = Decoder(t)
+
+        # Decode the message.
+        r = d.decode(c)
+
         print("t = " + str(t))
         print("P(x) = " + str(p))
-        print("M(x) = " + str(m))
+        print("G(x) = " + str(e.g))
+        print("M = " + str(m))
         print("C(x) = " + str(c))
+        print("S(x) = " + str(d.s))
+        print("Ω(x) = " + str(d.omega))
+        print("Λ(x) = " + str(d.lmbd))
+        print("E(x) = " + str(d.e))
+        print("R(x) = " + str(r))
 
     if __name__ == "__main__":
         main()

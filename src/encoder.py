@@ -32,7 +32,7 @@ class Encoder:
 
     def encode(self, m):
         """
-        Encodes given message polynomial.
+        Encodes given message array.
 
         Parameters
         ----------
@@ -42,7 +42,7 @@ class Encoder:
         Returns
         -------
         res : Polynomial
-            The code word polynomial.
+            The encoded code word polynomial.
         """
 
         p = Polynomial(m) * Polynomial([0] * 2 * self.t + [1])

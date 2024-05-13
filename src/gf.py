@@ -30,6 +30,9 @@ class GF:
     def __generate_gf(self):
         """Generates index and alpha arrays of the Galois field."""
 
+        # Convert primitive polynomial to binary.
+        prim = sum(map(lambda e: e[1] * 2 ** e[0], enumerate(self.p.coef)))
+
         x = 1
         for i in range(0, 2 ** self.p.degree() - 1):
             alpha[i] = x
@@ -37,7 +40,7 @@ class GF:
 
             x *= 2
             if x & 2 ** self.p.degree():
-                x ^= self.p(2)
+                x ^= prim
 
     def mul(a, b):
         """
@@ -102,3 +105,22 @@ class GF:
             ZeroDivisionError("Cannot divide by zero!")
 
         return alpha[(index[a] - index[b] + 15) % 15]
+
+    def pow(a, b):
+        """
+        Calculates a^b in the Galois field.
+
+        Parameters
+        ----------
+        a : int
+            The base number.
+        b : int
+            The exponent number.
+
+        Returns
+        -------
+        res : int
+            The power number.
+        """
+
+        return alpha[(index[a] * b) % 15]
