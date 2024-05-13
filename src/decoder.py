@@ -39,12 +39,12 @@ class Decoder:
     # TODO: Return decoded messages.
     def decode(self, r):
         """
-        Decodes given message array.
+        Decodes given message polynomial.
 
         Parameters
         ----------
-        r : array_like
-            The received message array.
+        r : Polynomial
+            The received message polynomial.
 
         Returns
         -------
