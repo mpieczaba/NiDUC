@@ -30,7 +30,7 @@ class NiDUC:
         d = Decoder(t)
 
         # Decode the message.
-        s = d.decode(c)
+        r = d.decode(c)
 
         print("t = " + str(t))
         print("P(x) = " + str(p))
@@ -40,7 +40,8 @@ class NiDUC:
         print("S(x) = " + str(d.s))
         print("Ω(x) = " + str(d.omega))
         print("Λ(x) = " + str(d.lmbd))
-        print("X = " + str(d.x))
+        print("E(x) = " + str(d.e))
+        print("R(x) = " + str(r))
 
     if __name__ == "__main__":
         main()

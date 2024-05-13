@@ -16,12 +16,18 @@ class Decoder:
     ----------
     t : int
         The number of symbols.
+    r : Polynomial
+            The received message polynomial.
     s : Polynomial
         The instance of the syndrome polynomial.
+    e : Polynomial
+        The instance of the error polynomial.
     omega : Polynomial
         The instance of the error magnitude polynomial.
     lmbd : Polynomial
         The instance of the error locator polynomial.
+    lmbd_derivative : Polynomial
+        The instance of the derivative of the error locator polynomial.
     """
 
     def __init__(self, t):
@@ -39,23 +45,34 @@ class Decoder:
         ----------
         r : array_like
             The received message array.
+
+        Returns
+        -------
+        res : Polynomial
+            The decoded code word polynomial.
         """
 
-        # TODO: Implement transmission medium simulation.
-        r.coef[0] ^= 5
-        r.coef[3] ^= 10
-        r.coef[-1] ^= 7
-        r.coef[7] ^= 12
+        self.r = r
 
-        self.__calculate_syndrome_polynomial(r)
+        # TODO: Implement transmission medium simulation.
+        self.r.coef[0] ^= 5
+        self.r.coef[3] ^= 10
+        self.r.coef[-1] ^= 7
+        self.r.coef[7] ^= 12
+
+        self.__calculate_syndrome_polynomial()
         self.__calculate_error_locator_and_magnitude_polynomials()
         self.__calculate_error_locations()
+        self.__calculate_error_locator_polynomial_derivative()
+        self.__calculate_error_polynomial()
 
-    def __calculate_syndrome_polynomial(self, p):
+        return self.r + self.e
+
+    def __calculate_syndrome_polynomial(self):
         """Calculates the syndrome polynomial."""
 
         for i in range(1, 13):
-            self.s.coef[i - 1] = p(GF.pow(2, i))
+            self.s.coef[i - 1] = self.r(GF.pow(2, i))
 
     def __calculate_error_locator_and_magnitude_polynomials(self):
         """Calculates the error locator and magnitude polynomials."""
@@ -79,8 +96,28 @@ class Decoder:
     def __calculate_error_locations(self):
         """Calculates error locations."""
 
-        self.x = []
+        self.e = Polynomial([0] * len(self.r))
 
         for i in range(0, len(gf.alpha)):
             if self.lmbd(gf.alpha[i]) == 0:
-                self.x.append((15 - i) % 15)
+                self.e.coef[(15 - i) % 15] = 1
+
+    def __calculate_error_locator_polynomial_derivative(self):
+        """Calculates the derivative of the error locator polynomial."""
+
+        self.lmbd_derivative = Polynomial([0] * len(self.lmbd))
+
+        for i in range(0, len(self.lmbd)):
+            self.lmbd_derivative.coef[i] = ((i) % 2) * self.lmbd.coef[i]
+
+        self.lmbd_derivative.coef.pop(0)
+
+    def __calculate_error_polynomial(self):
+        """Calculates the error polynomial."""
+
+        for i in range(0, len(self.e)):
+            if self.e.coef[i] != 0:
+                self.e.coef[i] = GF.div(
+                    self.omega(GF.pow(gf.alpha[i], -1)),
+                    self.lmbd_derivative(GF.pow(gf.alpha[i], -1)),
+                )
