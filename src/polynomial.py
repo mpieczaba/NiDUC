@@ -123,3 +123,6 @@ class Polynomial:
         """
 
         return len(self) - 1
+    
+    def to_list(self):
+        return self.coef
