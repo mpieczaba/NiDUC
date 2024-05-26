@@ -76,14 +76,15 @@ class Polynomial:
         rmd : Polynomial
             The remainder polynomial.
         """
+        
+        res_len = len(self) - len(poly) + 1
 
         rmd = Polynomial(self.coef)
-        res = Polynomial([0] * (len(self) - len(poly) + 1))
+        res = Polynomial([0] * res_len)
 
         i = 0
-        while len(rmd) >= len(poly) and rmd.coef != [0]:
+        while len(rmd) >= len(poly) and rmd.coef != [0] and i <= res_len:
             coef = GF.div(rmd.coef[-1], poly.coef[-1])
-
             res.coef[-1 - i] = coef
 
             rmd += poly * Polynomial([0] * (len(rmd) - len(poly)) + [coef])
