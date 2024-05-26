@@ -126,3 +126,11 @@ class Polynomial:
     
     def to_list(self):
         return self.coef
+    
+    def to_bytes(self):
+        return bytes(self.coef)
+
+    @staticmethod
+    def from_bytes(data):
+        coefficients = list(data)
+        return Polynomial(coefficients)

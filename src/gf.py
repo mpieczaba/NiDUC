@@ -63,6 +63,8 @@ class GF:
         err : ValueError
             If alpha or index array is empty.
         """
+        a = a % len(index)
+        b = b % len(index)
 
         if alpha is None or index is None:
             raise ValueError("Galois field is not set!")
@@ -95,6 +97,8 @@ class GF:
         zero_div_err : ZeroDivisionError
             If `b` is equal to zero.
         """
+        a = a % len(index)
+        b = b % len(index)
 
         if alpha is None or index is None:
             raise ValueError("Galois field is not set!")

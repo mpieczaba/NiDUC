@@ -54,12 +54,6 @@ class Decoder:
 
         self.r = r
 
-        # TODO: Implement transmission medium simulation.
-        self.r.coef[0] ^= 5
-        self.r.coef[3] ^= 10
-        self.r.coef[-1] ^= 7
-        self.r.coef[7] ^= 12
-
         self.__calculate_syndrome_polynomial()
         self.__calculate_error_locator_and_magnitude_polynomials()
         self.__calculate_error_locations()
