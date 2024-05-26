@@ -25,7 +25,7 @@ class TestReedSolomon(unittest.TestCase):
         bytes_received = self.medium.transmit(bytes_sent)
         received_polynomial = Polynomial.from_bytes(bytes_received)
         retrieved_polynomial = self.decoder.decode(received_polynomial)
-        retrieved_message = convert_list_to_string(retrieved_polynomial.to_list())[:3]
+        retrieved_message = convert_list_to_string(retrieved_polynomial.to_list())[-3:]
 
         self.assertEqual(message, retrieved_message, f"Expected {message}, got {retrieved_message}")
 

@@ -83,7 +83,7 @@ class Polynomial:
         res = Polynomial([0] * res_len)
 
         i = 0
-        while len(rmd) >= len(poly) and rmd.coef != [0] and i <= res_len:
+        while len(rmd) >= len(poly) and rmd.coef != [0] and i < res_len:
             coef = GF.div(rmd.coef[-1], poly.coef[-1])
             res.coef[-1 - i] = coef
 
