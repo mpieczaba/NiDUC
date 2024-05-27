@@ -32,7 +32,8 @@ class Decoder:
 
     def __init__(self, t):
         self.t = t
-        self.s = Polynomial([0] * 12)
+        self.n = 15
+        self.s = Polynomial([0] * 2 * self.t)
         self.omega = Polynomial(self.s.coef)
         self.lmbd = Polynomial([1])
 
@@ -65,8 +66,8 @@ class Decoder:
     def __calculate_syndrome_polynomial(self):
         """Calculates the syndrome polynomial."""
 
-        for i in range(1, 13):
-            self.s.coef[i - 1] = self.r(GF.pow(2, i))
+        for i in range(len(self.s)):
+            self.s.coef[i] = self.r(GF.pow(2, i + 1))
 
     def __calculate_error_locator_and_magnitude_polynomials(self):
         """Calculates the error locator and magnitude polynomials."""
