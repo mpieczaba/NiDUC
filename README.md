@@ -2,7 +2,7 @@
 
 ## O projekcie
 
-Implementacja kodera i dekodera RS zrealizowana w ramach zajęć projektowych _Niezawodności i Diagnostyki Układów Cyfrowych 2_ na Politechnice Wrocławskiej (2024).
+Implementacja kodera i dekodera RS zrealizowana w ramach zajęć projektowych _Niezawodność i Diagnostyka Układów Cyfrowych 2_ na Politechnice Wrocławskiej (2024).
 
 Autorzy:
 
@@ -11,17 +11,13 @@ Autorzy:
 
 ### Parametry implementacji
 
-| m   | k   | t   | n    | N    |
-| --- | --- | --- | ---- | ---- |
-| $4$ | $3$ | $6$ | $15$ | $60$ |
-
-gdzie:
-
-- m - długość symbolu (w bitach)
-- k - liczba symboli wiadomości ($k = n - 2t$)
-- t - liczba symboli korekcyjnych (zdolność korekcyjna)
-- n - liczba symboli w słowie ($n = 2^m$)
-- N - liczba bitów bloku kodowego ($N = n * m$)
+| Symbol | Nazwa parametru                                   | Wzór                  | Wartość |
+| ------ | ------------------------------------------------- | --------------------- | ------- |
+| m      | liczba bitów symbolu                              | N/A                   | 4       |
+| k      | liczba symboli wiadomości                         | $k = n - 2t$          | 3       |
+| t      | liczba symboli korekcyjnych (zdolność korekcyjna) | $t = \frac{n - k}{2}$ | 6       |
+| n      | liczba symboli w słowie                           | $n = 2^m$             | 15      |
+| N      | liczba bitów bloku kodowego                       | $N = n * m$           | 60      |
 
 ### Schemat implementacji
 
