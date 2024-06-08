@@ -1,12 +1,29 @@
-# NiDUC
-Implementacja kodera i dekodera RS.
+# Reed-Solomon Code
 
-## Parametry implementacji
+## O projekcie
 
-- symbole kodu z ciała Galois $GF(2^m)$, gdzie $m \in \set{ 3, 4, 5, 6, \dots }$
-- zdolność korekcyjna kodu $t \gt 3$ symbole
+Implementacja kodera i dekodera RS zrealizowana w ramach zajęć projektowych _Niezawodności i Diagnostyki Układów Cyfrowych 2_ na Politechnice Wrocławskiej (2024).
 
-## Schemat implementacji
+Autorzy:
+
+- Mikołaj Pieczaba
+- Kamil Sobierajski
+
+### Parametry implementacji
+
+| m   | k   | t   | n    | N    |
+| --- | --- | --- | ---- | ---- |
+| $4$ | $3$ | $6$ | $15$ | $60$ |
+
+gdzie:
+
+- m - długość symbolu (w bitach)
+- k - liczba symboli wiadomości ($k = n - 2t$)
+- t - liczba symboli korekcyjnych (zdolność korekcyjna)
+- n - liczba symboli w słowie ($n = 2^m$)
+- N - liczba bitów bloku kodowego ($N = n * m$)
+
+### Schemat implementacji
 
 ```mermaid
 stateDiagram
@@ -31,7 +48,7 @@ stateDiagram
         bitFlip: Błędy losowe
         burstError: Błąd typu wiązanka (burst error)
 
-        [*] --> bitFlip 
+        [*] --> bitFlip
         bitFlip --> [*]
         [*] --> burstError
         burstError --> [*]
