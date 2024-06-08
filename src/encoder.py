@@ -14,12 +14,12 @@ class Encoder:
     Attributes
     ----------
     t : int
-        The number of symbols.
+        The number of parity symbols.
     n : int
         The code word size.
     k : int
         The message size.
-    g : Polynomial
+    generator_polynomial : Polynomial
         The instance of the generator polynomial.
     """
 
@@ -45,14 +45,14 @@ class Encoder:
             The encoded code word polynomial.
         """
 
-        p = Polynomial(m) * Polynomial([0] * 2 * self.t + [1])
-
-        return p + p % self.g
-
+        parity_polynomial = Polynomial(m) * Polynomial([0] * 2 * self.t + [1])
+        codeword_polynomial = parity_polynomial + (parity_polynomial % self.generator_polynomial)
+        
+        return codeword_polynomial
     def __generate_gen_poly(self):
         """Generates the generator polynomial."""
 
-        self.g = Polynomial([1])
+        self.generator_polynomial = Polynomial([1])
 
         for i in range(1, 2 * self.t + 1):
-            self.g *= Polynomial([gf.alpha[i], 1])
+            self.generator_polynomial *= Polynomial([gf.alpha[i], 1])

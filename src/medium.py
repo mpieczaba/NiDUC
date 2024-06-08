@@ -1,34 +1,51 @@
 import random
 
 class Medium:
-    def __init__(self, error_rate=0.01):
+    def __init__(self, n):
         """
-        Initialize the Medium with a given error rate.
+        Inicjalizuje klasę Medium.
+
+        Args:
+            n (int): Długość słowa kodowego.
+        """
+        self.n = n
+        self.num_errors = 0
+
+    def set_errors(self, num_errors):
+        """
+        Ustawia liczbę błędów do wprowadzenia.
+
+        Args:
+            num_errors (int): Liczba błędów.
+        """
+        self.num_errors = num_errors
+
+    def introduce_errors(self, codeword):
+        """
+        Wprowadza błędy do słowa kodowego.
+
+        Args:
+            codeword (list): Słowo kodowe.
+
+        Returns:
+            list: Słowo kodowe z wprowadzonymi błędami.
+        """
+        erroneous_codeword = codeword.copy()
+        error_positions = random.sample(range(self.n), self.num_errors)
+
+        for pos in error_positions:
+            erroneous_codeword.coef[pos] ^= 1  # Wprowadzenie błędu przez inwersję bitu
         
-        :param error_rate: Probability of flipping any individual bit (0.01 = 1% chance)
+        return erroneous_codeword
+
+    def transmit(self, codeword):
         """
-        if not (0 <= error_rate <= 1):
-            raise ValueError("Error rate must be between 0 and 1.")
-        self.error_rate = error_rate
+        Symuluje przesyłanie słowa kodowego przez medium z błędami.
 
-    def transmit(self, data):
+        Args:
+            codeword (list): Słowo kodowe.
+
+        Returns:
+            list: Otrzymane słowo kodowe z wprowadzonymi błędami.
         """
-        Simulate transmission of data through a noisy medium by randomly flipping bits.
-        :param data: A bytes object representing encoded data
-        :return: A bytes object with some bits flipped according to the error rate
-        """
-        # Convert the data to a list of bits
-        bit_list = ''.join(format(byte, '08b') for byte in data)
-
-        # Flip bits with the given probability
-        corrupted_bits = [
-            str(int(not int(bit))) if random.random() < self.error_rate else bit
-            for bit in bit_list
-        ]
-
-        # Convert back to bytes
-        corrupted_data = bytearray()
-        for i in range(0, len(corrupted_bits), 8):
-            corrupted_data.append(int(''.join(corrupted_bits[i:i + 8]), 2))
-
-        return bytes(corrupted_data)
+        return self.introduce_errors(codeword)

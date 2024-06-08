@@ -37,7 +37,6 @@ class Decoder:
         self.omega = Polynomial(self.s.coef)
         self.lmbd = Polynomial([1])
 
-    # TODO: Return decoded messages.
     def decode(self, r):
         """
         Decodes given message polynomial.

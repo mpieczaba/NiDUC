@@ -1,6 +1,4 @@
 from gf import GF
-
-
 class Polynomial:
     """
     Represents a polynomial in the given Galois field.
@@ -29,9 +27,7 @@ class Polynomial:
 
     def __str__(self):
         return " + ".join(
-            reversed(
-                list(map(lambda e: str(e[1]) + "*x^" + str(e[0]), enumerate(self.coef)))
-            )
+            list(map(lambda e: str(e[1]) + "*x^" + str(e[0]), enumerate(self.coef)))
         )
 
     def __len__(self):
@@ -135,3 +131,14 @@ class Polynomial:
     def from_bytes(data):
         coefficients = list(data)
         return Polynomial(coefficients)
+    
+    def copy(self):
+        """
+        Returns a copy of the polynomial.
+
+        Returns
+        -------
+        Polynomial
+            A copy of the polynomial.
+        """
+        return Polynomial(self.coef.copy())
