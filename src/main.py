@@ -27,8 +27,7 @@ class NiDUC:
         # Create an instance of the encoder.
         encoder = Encoder(t)
         # Set up the Medium simulation
-        medium = Medium(n)
-        medium.set_errors(num_errors)
+        medium = Medium()
         # Create an instance of the decoder.
         decoder = Decoder(t)
         
@@ -38,6 +37,8 @@ class NiDUC:
             # -------
             # Initial message string
             user_message = input("Message: ")
+            num_errors = input("Number of random errors: ")
+            num_errors = int(num_errors)
             # Message list
             message_list = convert_string_to_list(user_message[:k])
             # Encoded message polynomial
@@ -46,7 +47,7 @@ class NiDUC:
             # RECEIVING
             # ---------
             # Received message polynomial
-            received_polynomial = medium.transmit(encoded_polynomial)
+            received_polynomial = medium.transmit(encoded_polynomial, "burst", num_errors)
             # Received message string
             received_message = convert_list_to_string(received_polynomial.to_list())[-k:]
             
@@ -69,7 +70,7 @@ class NiDUC:
                 print("\nCoding details: ")
                 print(f"M = {message_list}")
                 print(f"C(x) = {encoded_polynomial}")
-                print(f"Received polynomial = {received_polynomial}")
+                print(f"C'(x) = {received_polynomial}")
                 print(f"S(x) = {decoder.s}")
                 print(f"Ω(x) = {decoder.omega}")
                 print(f"Λ(x) = {decoder.lmbd}")
