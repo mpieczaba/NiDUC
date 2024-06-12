@@ -10,11 +10,12 @@ class TestReedSolomon(unittest.TestCase):
     def setUp(self):
         self.p = Polynomial([1, 1, 0, 0, 1]) # Primitive polynomial for GF(2^4)
         self.gf = GF(self.p)
+        self.m = 4  # Bits per symbol
         self.t = 6  # Number of correctable symbols
-        self.n = 15 # Length of codeword (for GF(2^4) can be up to 15)
+        self.n = 2 ** self.m - 1 # Length of codeword (for GF(2^4) can be up to 15)
         self.encoder = Encoder(self.t)
         self.decoder = Decoder(self.t)
-        self.medium = Medium(self.n) # Transmission medium
+        self.medium = Medium() # Transmission medium
 
     def run(self, result=None):
         self.num_passed = 0

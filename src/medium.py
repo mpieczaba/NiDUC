@@ -26,7 +26,7 @@ class Medium:
 
         return Polynomial(erroneous_codeword)
 
-    def introduce_burst_errors(self, codeword, burst_length):
+    def introduce_burst_errors(self, codeword, burst_length, start_index):
         """
         Wprowadza błędy typu burst do słowa kodowego.
 
@@ -38,14 +38,17 @@ class Medium:
             list: Słowo kodowe z wprowadzonymi błędami typu burst.
         """
         erroneous_codeword = codeword.copy()
-        start_position = random.randint(0, len(codeword) - burst_length)
+        
+        # Zabezpiecznie zakresu
+        start_index = min(start_index, len(codeword) - 1)
+        start_index = max(start_index, 0)
 
         for i in range(burst_length):
-            erroneous_codeword[start_position + i] ^= 1  # Wprowadzenie błędu przez inwersję bitu
+            erroneous_codeword[start_index + i] ^= 1  # Wprowadzenie błędu przez inwersję bitu
 
         return Polynomial(erroneous_codeword)
 
-    def transmit(self, codeword, error_type='random', n=0):
+    def transmit(self, codeword, error_type='random', n=0, start_index=0):
         """
         Symuluje przesyłanie słowa kodowego przez medium z błędami.
 
@@ -53,6 +56,7 @@ class Medium:
             codeword (Polynomial): Słowo kodowe.
             error_type (str): Typ błędów ('random' lub 'burst').
             n (number): Liczba błędów podanego typu
+            start (number): Index pierwszego błędu dla typu burst
 
         Returns:
             list: Otrzymane słowo kodowe z wprowadzonymi błędami.
@@ -62,6 +66,6 @@ class Medium:
         elif error_type == 'random':
             return self.introduce_random_errors(codeword.coef, n)
         elif error_type == 'burst':
-            return self.introduce_burst_errors(codeword.coef, n)
+            return self.introduce_burst_errors(codeword.coef, n, start_index)
         else:
             raise ValueError("Invalid error type. Use 'random' or 'burst'.")
