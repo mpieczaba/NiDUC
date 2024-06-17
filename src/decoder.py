@@ -55,12 +55,21 @@ class Decoder:
         self.r = r
 
         self.__calculate_syndrome_polynomial()
+
+        # # while len(self.s) < 15:
+        #     self.s.coef.append(0)
+ 
         self.__calculate_error_locator_and_magnitude_polynomials()
         self.__calculate_error_locations()
         self.__calculate_error_locator_polynomial_derivative()
         self.__calculate_error_polynomial()
 
-        return self.r + self.e
+        res = self.r + self.e
+
+        while len(res) < 15:
+            res.coef.append(0)
+
+        return res
 
     def __calculate_syndrome_polynomial(self):
         """Calculates the syndrome polynomial."""
@@ -79,6 +88,7 @@ class Decoder:
             temp2 = self.lmbd
 
             self.lmbd = prev2 + self.lmbd * (prev1 / self.omega)
+
             self.omega = prev1 % self.omega
 
             prev1 = temp1
@@ -95,6 +105,7 @@ class Decoder:
         for i in range(0, len(gf.alpha)):
             if self.lmbd(gf.alpha[i]) == 0:
                 self.e.coef[(15 - i) % 15] = 1
+        # print(self.e.coef)
 
     def __calculate_error_locator_polynomial_derivative(self):
         """Calculates the derivative of the error locator polynomial."""
@@ -115,3 +126,4 @@ class Decoder:
                     self.omega(GF.pow(gf.alpha[i], -1)),
                     self.lmbd_derivative(GF.pow(gf.alpha[i], -1)),
                 )
+

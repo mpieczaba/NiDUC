@@ -46,9 +46,15 @@ class Encoder:
         """
 
         parity_polynomial = Polynomial(m) * Polynomial([0] * 2 * self.t + [1])
-        codeword_polynomial = parity_polynomial + (parity_polynomial % self.generator_polynomial)
-        
+        codeword_polynomial = parity_polynomial + (
+            parity_polynomial % self.generator_polynomial
+        )
+
+        while len(codeword_polynomial) < 15:
+            codeword_polynomial.coef.append(0)
+
         return codeword_polynomial
+
     def __generate_gen_poly(self):
         """Generates the generator polynomial."""
 
