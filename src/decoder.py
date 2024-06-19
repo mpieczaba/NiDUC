@@ -35,7 +35,6 @@ class Decoder:
         self.n = 15
         self.s = Polynomial([0] * 2 * self.t)
         self.omega = Polynomial(self.s.coef)
-        self.lmbd = Polynomial([1])
 
     def decode(self, r):
         """
@@ -55,18 +54,15 @@ class Decoder:
         self.r = r
 
         self.__calculate_syndrome_polynomial()
-
-        # # while len(self.s) < 15:
-        #     self.s.coef.append(0)
- 
-        self.__calculate_error_locator_and_magnitude_polynomials()
+        self.__calculate_error_locator_polynomial()
+        self.__calculate_error_magnitude_polynomial()
         self.__calculate_error_locations()
         self.__calculate_error_locator_polynomial_derivative()
         self.__calculate_error_polynomial()
 
         res = self.r + self.e
 
-        while len(res) < 15:
+        while len(res) < self.n:
             res.coef.append(0)
 
         return res
@@ -77,25 +73,38 @@ class Decoder:
         for i in range(len(self.s)):
             self.s.coef[i] = self.r(GF.pow(2, i + 1))
 
-    def __calculate_error_locator_and_magnitude_polynomials(self):
-        """Calculates the error locator and magnitude polynomials."""
+    def __calculate_error_locator_polynomial(self):
+        """Calculates the error locator polynomial."""
 
-        prev1 = Polynomial([0] * 2 * self.t + [1])
-        prev2 = Polynomial([0])
+        k = 1
+        l = 0
 
-        while self.omega.degree() > self.t:
-            temp1 = self.omega
-            temp2 = self.lmbd
+        self.lmbd = Polynomial([1])
+        c = Polynomial([0, 1])
+        e = self.s.coef[0]
 
-            self.lmbd = prev2 + self.lmbd * (prev1 / self.omega)
+        while k < 2 * self.t:
 
-            self.omega = prev1 % self.omega
+            j = 1
+            while j <= l:
+                e ^= GF.mul(self.lmbd.coef[j], self.s.coef[k - 1 - j])
+                j += 1
 
-            prev1 = temp1
-            prev2 = temp2
+            tmp = self.lmbd + Polynomial([e]) * c
 
-        self.omega /= Polynomial([self.lmbd.coef[0]])
-        self.lmbd /= Polynomial([self.lmbd.coef[0]])
+            if 2 * l < k and e != 0:
+                l = k - l
+                c = self.lmbd / Polynomial([e])
+
+            c *= Polynomial([0, 1])
+            e = self.s.coef[k]
+            self.lmbd = tmp
+            k += 1
+
+    def __calculate_error_magnitude_polynomial(self):
+        """Calculates the error magnitude polynomial."""
+
+        self.omega = (self.s * self.lmbd) % Polynomial([0] * 2 * self.t + [1])
 
     def __calculate_error_locations(self):
         """Calculates error locations."""
@@ -104,8 +113,7 @@ class Decoder:
 
         for i in range(0, len(gf.alpha)):
             if self.lmbd(gf.alpha[i]) == 0:
-                self.e.coef[(15 - i) % 15] = 1
-        # print(self.e.coef)
+                self.e.coef[(self.n - i) % self.n] = 1
 
     def __calculate_error_locator_polynomial_derivative(self):
         """Calculates the derivative of the error locator polynomial."""
@@ -126,4 +134,3 @@ class Decoder:
                     self.omega(GF.pow(gf.alpha[i], -1)),
                     self.lmbd_derivative(GF.pow(gf.alpha[i], -1)),
                 )
-

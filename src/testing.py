@@ -61,14 +61,27 @@ def betterTesting():
     decoder = Decoder(t)
     medium = Medium()
 
-    for l in range(0, 16):
+    i = 0
+    j = 1
+    k = 2
+
+    x = encoder.encode([i, j, k])
+    z = x.coef.copy()
+    x.coef[4] ^= 2
+    y = decoder.decode(x)
+
+    for l in range(0, 15):
+        print(l)
         for i in range(0, 16):
             for j in range(0, 16):
                 for k in range(0, 16):
-
                     x = encoder.encode([i, j, k])
                     z = x.coef.copy()
-                    x.coef[l] ^= 2
+
+                    # x.coef[l] ^= 2
+                    # x.coef[(l + 5) % 15] ^= 2
+                    # x.coef[(l + 9) % 15] ^= 2
+
                     y = decoder.decode(x)
 
                     # print(f"\nYour message: {x.coef[12:16] == [i,j,k]}")

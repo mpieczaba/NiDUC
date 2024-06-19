@@ -1,4 +1,6 @@
 from gf import GF
+
+
 class Polynomial:
     """
     Represents a polynomial in the given Galois field.
@@ -72,7 +74,7 @@ class Polynomial:
         rmd : Polynomial
             The remainder polynomial.
         """
-        
+
         res_len = len(self) - len(poly) + 1
 
         rmd = Polynomial(self.coef)
@@ -120,10 +122,10 @@ class Polynomial:
         """
 
         return len(self) - 1
-    
+
     def to_list(self):
         return self.coef
-    
+
     def to_bytes(self):
         return bytes(self.coef)
 
@@ -131,7 +133,7 @@ class Polynomial:
     def from_bytes(data):
         coefficients = list(data)
         return Polynomial(coefficients)
-    
+
     def copy(self):
         """
         Returns a copy of the polynomial.

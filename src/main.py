@@ -47,7 +47,7 @@ class NiDUC:
             # RECEIVING
             # ---------
             # Received message polynomial
-            received_polynomial = medium.transmit(encoded_polynomial, "burst", num_errors)
+            received_polynomial = medium.transmit(encoded_polynomial, "burst", num_errors, 1)
             # Received message string
             received_message = convert_list_to_string(received_polynomial.to_list())[-k:]
             
